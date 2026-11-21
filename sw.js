@@ -1,5 +1,5 @@
 // Service Worker: офлайн-кэш тренажёра
-const CACHE = 'micro-trainer-v2.7';
+const CACHE = 'micro-trainer-v2.8-submodules';
 const ASSETS = [
   './index.html',
   './manifest.webmanifest',
