@@ -1658,6 +1658,7 @@ function v24Restore(){
       S.first=new Set(Array.isArray(x.first)?x.first:[]);
       if(S.view==='theory'&&(!S.mod||!S.mod.theory[S.slide])){S.view='home';S.mod=null;S.slide=0;}
       if(S.view==='quiz'&&(!S.mod||!Array.isArray(S.order)||!S.order.length||S.qi>=S.order.length)){S.view='home';}
+      if(S.view==='done'&&!S.mod){S.view='home';}
     }
     if(raw.MS){
       const x=raw.MS, map=new Map(allMicroTasks().map(t=>[t.caseId+'_'+t.taskNo,t]));
@@ -4691,6 +4692,17 @@ render = function(){
   return __origRenderExam();
 };
 })();
+
+// --- Страховка: любое падение рендера откатывает на главную, а не на пустой экран ---
+const __safeRender = render;
+render = function(){
+  try { return __safeRender(); }
+  catch(e){
+    try { console.error('render failed, fallback to home:', e); } catch(_){}
+    S.view = 'home'; S.mod = null;
+    try { return __safeRender(); } catch(e2){ try { console.error('home render failed:', e2); } catch(_){} }
+  }
+};
 
 render();
 
