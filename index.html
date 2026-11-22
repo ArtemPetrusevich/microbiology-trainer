@@ -4356,7 +4356,7 @@ st.textContent = `
 .tasksearch:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
 .io-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 .io-row .btn{padding:8px 14px;font-size:13.5px}
-.big{font-size:clamp(20px,6.5vw,32px);white-space:nowrap;letter-spacing:-0.5px;line-height:1.15}
+.big{font-size:clamp(18px,5vw,32px);white-space:nowrap;letter-spacing:-0.5px;line-height:1.15}
 .stats-grid>div{min-width:0;overflow:hidden}
 `;
 document.head.appendChild(st);
@@ -4411,7 +4411,6 @@ v24Dashboard = function(){
   <div><div class="big">${pct}%</div><small class="sub">точность</small></div>
   <div><div class="big">${tst.done}/${tst.total}</div><small class="sub">задач</small></div></div>
   <p class="sub" style="margin-bottom:0">Прогресс и незавершённые занятия сохраняются на этом устройстве.</p>
-  <div class="io-row"><button class="btn ghost" onclick="exportProgress()">⭳ Экспорт прогресса (JSON)</button><button class="btn ghost" onclick="importProgress()">⭱ Импорт прогресса</button></div>
   </section>`;
 };
 
@@ -4479,7 +4478,7 @@ home = function(){
   <div class="group"><h2>Модули 3–9. Общая и частная микробиология</h2><p class="sub">Каждый модуль разбит на подмодули: теория и тест маленькими порциями. Фаги, деконтаминация, антимикробная терапия, инфекция, иммунодиагностика, микробиота, вирусология и навигатор вопроса №2.</p></div>
   ${g3groups.map(g => `<p class="sub" style="margin:14px 4px 6px;font-weight:700">Модуль ${g.n}. ${g.title}</p>${g.subs.map(modBtn).join('')}`).join('')}
   ${exam ? `<div class="group"><h2>Самоконтроль</h2></div>${modBtn(exam)}` : ''}
-  <p class="legend">Итоговые проценты, незавершённые занятия и отметки задач сохраняются локально на этом устройстве. Экспорт прогресса — в карточке «Мой прогресс» выше. Микрофотографии встроены в файл и доступны без интернета.</p>`;
+  <p class="legend">Итоговые проценты, незавершённые занятия и отметки задач сохраняются локально на этом устройстве. Микрофотографии встроены в файл и доступны без интернета.</p>`;
 };
 
 // --- Расширение рендера на задачи ---
