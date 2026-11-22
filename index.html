@@ -52,9 +52,9 @@ button{font:inherit;cursor:pointer;border:none;border-radius:10px}
 .modmeta{color:var(--muted);font-size:13px;margin-top:2px}
 .score-pill{font-size:12.5px;font-weight:700;color:var(--ok);background:#e8f3ed;padding:4px 9px;border-radius:20px;white-space:nowrap}
 
-.group{margin-top:22px;margin-bottom:6px}
-.group h2{font-size:18px;color:var(--ink)}
-.group .sub{margin-top:3px;font-size:13.5px}
+.group{margin-top:28px;margin-bottom:10px}
+.group h2{font-size:clamp(25px,4vw,32px);font-weight:700;line-height:1.15;color:var(--ink)}
+.group .sub{margin:10px 0 0;font-size:clamp(16px,2.4vw,21px);line-height:1.35}
 
 .slide-img{background:#fffefb;border:1px solid var(--line);border-radius:12px;padding:10px;margin:14px 0;overflow:hidden}
 .slide-img svg,.slide-img img{display:block;width:100%;height:auto;max-width:100%;border-radius:6px}
@@ -4445,14 +4445,24 @@ window.startQuiz = () => {
 
 // --- Главная страница v2.6 ---
 home = function(){
+  const moduleHeader = (title, examQuestions) => `<div class="group"><h2>${title}</h2><p class="sub">${examQuestions}</p></div>`;
   const g1 = MODULES.filter(m => String(m.id).startsWith('1.'));
   const g2 = MODULES.filter(m => String(m.id).startsWith('2.'));
   const g3titles = {3:'Бактериофаги',4:'Деконтаминация и антимикробная терапия',5:'Инфекция, патогенность, токсины',6:'Иммунодиагностика и иммунобиологические препараты',7:'Микробиота, микозы, история и новые технологии',8:'Общая вирусология',9:'Частная микробиология (вопрос №2)'};
+  const g3examQuestions = {
+    3:'Экзаменационные вопросы: 5, 6, 51; 8 — фаготипирование',
+    4:'Экзаменационные вопросы: 1, 2, 12, 21, 22, 24, 41–43, 50',
+    5:'Экзаменационные вопросы: 36, 38, 40, 55',
+    6:'Экзаменационные вопросы: 7, 10, 14–16, 28, 30, 35, 45–48',
+    7:'Экзаменационные вопросы: 11, 13, 17, 25–27, 32, 39, 57',
+    8:'Экзаменационные вопросы: 19, 34, 61',
+    9:'Экзаменационный вопрос: 2'
+  };
   const g3groups = [3,4,5,6,7,8,9].map(n => {
     const subs = n === 9
       ? MODULES.filter(m => m.id === 9)
       : MODULES.filter(m => String(m.id).startsWith(n + '.'));
-    return { n, title: g3titles[n], subs };
+    return { n, title: g3titles[n], subs, examQuestions: g3examQuestions[n] };
   }).filter(g => g.subs.length);
   const exam = MODULES.find(m => m.id === 'exam');
   const modBtn = m => {
@@ -4471,12 +4481,11 @@ home = function(){
   <button class="micro-entry" onclick="openMicroMode()"><span class="micro-icon">🔬</span><span><strong>Распознавание микропрепаратов</strong><small>Учебные препараты с описаниями: морфология, окраска, метод микроскопии.</small></span><span style="margin-left:auto;font-size:20px">→</span></button>
   <button class="micro-entry" onclick="openTasks()"><span class="micro-icon">🩺</span><span><strong>Ситуационные задачи</strong><small>149 задач для самопроверки. Переворачиваемые карточки с эталонными ответами, отметки «прорешано» и «сложная».</small></span><span style="margin-left:auto;font-size:20px">→</span></button>
   <button class="micro-entry" onclick="openExamRun()"><span class="micro-icon">🎓</span><span><strong>Итоговый прогон</strong><small>Экзаменационный билет: вопрос по общей микробиологии, тема вопроса №2 и 3 ситуационные задачи. Как на реальном экзамене.</small></span><span style="margin-left:auto;font-size:20px">→</span></button>
-  <div class="group"><h2>Модуль 1. Морфология, структура, микроскопия</h2><p class="sub">Экзаменационные вопросы: 4, 20, 29, 33, 37, 44, 52, 53</p></div>
+  ${moduleHeader('Модуль 1. Морфология, структура, микроскопия', 'Экзаменационные вопросы: 4, 20, 29, 33, 37, 44, 52, 53')}
   ${g1.map(modBtn).join('')}
-  <div class="group"><h2>Модуль 2. Физиология, культивирование и генетика бактерий</h2><p class="sub">Экзаменационные вопросы: 3, 9, 18, 23, 31, 49, 54, 56, 58–60</p></div>
+  ${moduleHeader('Модуль 2. Физиология, культивирование и генетика бактерий', 'Экзаменационные вопросы: 3, 9, 18, 23, 31, 49, 54, 56, 58–60')}
   ${g2.map(modBtn).join('')}
-  <div class="group"><h2>Модули 3–9. Общая и частная микробиология</h2><p class="sub">Каждый модуль разбит на подмодули: теория и тест маленькими порциями. Фаги, деконтаминация, антимикробная терапия, инфекция, иммунодиагностика, микробиота, вирусология и навигатор вопроса №2.</p></div>
-  ${g3groups.map(g => `<p class="sub" style="margin:14px 4px 6px;font-weight:700">Модуль ${g.n}. ${g.title}</p>${g.subs.map(modBtn).join('')}`).join('')}
+  ${g3groups.map(g => `${moduleHeader(`Модуль ${g.n}. ${g.title}`, g.examQuestions)}${g.subs.map(modBtn).join('')}`).join('')}
   ${exam ? `<div class="group"><h2>Самоконтроль</h2></div>${modBtn(exam)}` : ''}
   <p class="legend">Итоговые проценты, незавершённые занятия и отметки задач сохраняются локально на этом устройстве. Микрофотографии встроены в файл и доступны без интернета.</p>`;
 };
